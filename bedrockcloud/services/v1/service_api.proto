@@ -1,0 +1,165 @@
+syntax = "proto3";
+
+package bedrockcloud.services.v1;
+
+import "bedrockcloud/node/v1/server_software.proto";
+import "bedrockcloud/services/v1/service_types.proto";
+import "bedrockcloud/tasks/v1/task_types.proto";
+
+option java_multiple_files = true;
+option java_package = "de.bedrockcloud.proto.services.v1";
+
+message GetServiceLogsRequest {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+  optional uint32 limit = 2;  // Optional: max number of log lines to return
+}
+
+message GetServiceLogsResponse {
+  repeated string lines = 1;
+}
+
+message StreamServiceLogsRequest {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+}
+
+message StreamServiceLogsResponse {
+  string line = 1;
+}
+
+message PrepareServiceByTaskRequest {
+  bedrockcloud.tasks.v1.TaskDefinition task = 1;
+}
+
+message PrepareServiceByTaskResponse {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+}
+
+message PrepareServiceByOptionsRequest {
+  optional uint32 ordered_id = 1;
+  optional string node_to_deploy = 2;
+  bedrockcloud.tasks.v1.TaskDefinition task = 3;
+}
+
+message PrepareServiceByOptionsResponse {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+}
+
+message StartServiceRequest {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+}
+
+message StartServiceResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message RestartServiceRequest {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+}
+
+message RestartServiceResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message StopServiceRequest {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+}
+
+message StopServiceResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message DeleteServiceRequest {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+}
+
+message DeleteServiceResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message GetAllServicesRequest {}
+
+message GetAllServicesResponse {
+  repeated bedrockcloud.services.v1.ServiceDefinition services = 1;
+}
+
+message GetByTaskRequest {
+  bedrockcloud.tasks.v1.TaskDefinition task = 1;
+}
+
+message GetByTaskResponse {
+  repeated bedrockcloud.services.v1.ServiceDefinition services = 1;
+}
+
+message GetByUuidRequest {
+  string uuid = 1;
+}
+
+message GetByUuidResponse {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+}
+
+message GetByNameRequest {
+  string name = 1;
+}
+
+message GetByNameResponse {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+}
+
+message GetBySoftwareTypeRequest {
+  bedrockcloud.node.v1.SoftwareType software_type = 1;
+}
+
+message GetBySoftwareTypeResponse {
+  repeated bedrockcloud.services.v1.ServiceDefinition services = 1;
+}
+
+message SendCommandRequest {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+  string command = 2;
+}
+
+message SendCommandResponse {
+  bool success = 1;
+}
+
+message UpdateServiceMetaRequest {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+  map<string, string> meta = 2;
+}
+
+message UpdateServiceMetaResponse {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+}
+
+message UpdatePlayerCountRequest {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+  uint32 player_count = 2;
+}
+
+message UpdatePlayerCountResponse {
+  bedrockcloud.services.v1.ServiceDefinition service = 1;
+}
+
+service ServiceAPIService {
+  rpc PrepareServiceByTask(PrepareServiceByTaskRequest) returns (PrepareServiceByTaskResponse);
+  rpc PrepareServiceByOptions(PrepareServiceByOptionsRequest) returns (PrepareServiceByOptionsResponse);
+  rpc StartService(StartServiceRequest) returns (StartServiceResponse);
+  rpc RestartService(RestartServiceRequest) returns (RestartServiceResponse);
+  rpc StopService(StopServiceRequest) returns (StopServiceResponse);
+  rpc DeleteService(DeleteServiceRequest) returns (DeleteServiceResponse);
+  rpc GetAllServices(GetAllServicesRequest) returns (GetAllServicesResponse);
+  rpc GetByTask(GetByTaskRequest) returns (GetByTaskResponse);
+  rpc GetByUuid(GetByUuidRequest) returns (GetByUuidResponse);
+  rpc GetByName(GetByNameRequest) returns (GetByNameResponse);
+  rpc GetBySoftwareType(GetBySoftwareTypeRequest) returns (GetBySoftwareTypeResponse);
+  rpc SendCommand(SendCommandRequest) returns (SendCommandResponse);
+  rpc UpdateServiceMeta(UpdateServiceMetaRequest) returns (UpdateServiceMetaResponse);
+  rpc UpdatePlayerCount(UpdatePlayerCountRequest) returns (UpdatePlayerCountResponse);
+  rpc GetServiceLogs(GetServiceLogsRequest) returns (GetServiceLogsResponse);
+  rpc StreamServiceLogs(StreamServiceLogsRequest) returns (stream StreamServiceLogsResponse);
+}

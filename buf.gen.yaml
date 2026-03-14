@@ -1,0 +1,39 @@
+version: v2
+plugins:
+  - remote: buf.build/protocolbuffers/java
+    out: gen/java
+  - remote: buf.build/grpc/java
+    out: gen/java
+    opt:
+      - lite=false
+
+  - remote: buf.build/grpc/kotlin
+    out: gen/java
+    opt:
+      - lite=false
+
+  - remote: buf.build/bufbuild/es:v2.2.3
+    out: ../app/proto/gen
+    opt:
+      - target=ts
+      - import_extension=ts
+      - json_types=true
+      
+  - remote: buf.build/community/stephenh-ts-proto
+    out: gen/ts
+    opt:
+      - esModuleInterop=true
+      - forceLong=string
+      - useOptionals=messages
+      - outputServices=grpc-js
+      - lite=false
+      
+  - remote: buf.build/protocolbuffers/go
+    out: gen/go
+    opt:
+      - paths=source_relative
+      
+  - remote: buf.build/grpc/go
+    out: gen/go
+    opt:
+      - paths=source_relative

@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package bedrockcloud.node.v1;
+
+option java_multiple_files = true;
+option java_package = "de.bedrockcloud.proto.node.v1";
+
+enum NodeStates {
+  NODE_STATES_OFFLINE_UNSPECIFIED = 0;
+  NODE_STATES_BOOTING = 1;
+  NODE_STATES_ONLINE = 2;
+  NODE_STATES_DRAINING = 3;
+}
+
+message Node {
+  string name = 1;
+  string uuid = 2;
+  string grpc_address = 3;
+  int32 grpc_port = 4;
+  NodeStates state = 5;
+  int32 max_memory = 6;
+  bool head = 7;
+  int64 boot_timestamp = 8;
+}
+
+message NodeSnapshot {
+  string name = 1;
+  string uuid = 2;
+  NodeStates state = 3;
+  int32 used_memory = 4;
+  double cpu_usage = 5;
+  int32 online_players = 6;
+  int64 timestamp = 8;
+}
+
+message GetAllNodesRequest {}
+
+message GetAllNodesResponse {
+  repeated Node nodes = 1;
+}
+
+message GetNodeByNameRequest {
+  string name = 1;
+}
+
+message GetNodeByNameResponse {
+  Node node = 1;
+}
+
+message GetNodeSnapshotRequest {
+  string name = 1;
+}
+
+message GetNodeSnapshotResponse {
+  NodeSnapshot snapshot = 1;
+}
+
+service ClusterAPIService {
+  rpc GetAllNodes(GetAllNodesRequest) returns (GetAllNodesResponse);
+  rpc GetNodeByName(GetNodeByNameRequest) returns (GetNodeByNameResponse);
+  rpc GetNodeSnapshot(GetNodeSnapshotRequest) returns (GetNodeSnapshotResponse);
+}

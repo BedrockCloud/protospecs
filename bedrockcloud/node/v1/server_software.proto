@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package bedrockcloud.node.v1;
+
+option java_package = "de.bedrockcloud.proto.node.v1";
+option java_multiple_files = true;
+
+message ServerSoftware {
+	string name = 1;
+	string version = 2;
+	uint32 build = 3;
+	string url = 4;
+	string plugin_dir = 5;
+	SoftwareType type = 6;
+}
+
+enum SoftwareType {
+	SOFTWARE_TYPE_UNSPECIFIED = 0;
+	SOFTWARE_TYPE_SERVER = 1;
+	SOFTWARE_TYPE_PROXY = 2;
+}
